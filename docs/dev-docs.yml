@@ -68,6 +68,7 @@ pages:
   - custom-name-providers
 - misc/resources
 - misc/utilities
+- misc/shaders
 
 ---
 section: Advanced
