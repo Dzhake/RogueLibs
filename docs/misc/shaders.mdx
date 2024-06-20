@@ -2,11 +2,11 @@
 title: How to use shaders
 ---
 
-# Setup dev enviroment
+# Set up dev enviroment
 
 ## Download unity
 
-You can't load shader directly in-game, you need to compile it first. And for that, you need unity with exactly same version as the one which Streets of Rogue uses.
+You can't load a shader directly in-game, you need to compile it first. And for that, you need unity with exactly the same version as the one which Streets of Rogue uses.
 
 Go to [Unity download archive](https://unity.com/releases/editor/archive) and download there version 2020.3.23f1
 
@@ -22,15 +22,15 @@ Now, create new empty project in unity. Create there folder "Editor", and put th
 
 Now, create your shader. You need to know HLSL to write it, and you can try looking at existing shaders.
 
-Then, create `New > Material`, and select your shader as material's shader.
+Then, select `New > Material`, and select your shader as material's shader.
 
 ## Create asset bundle
 
 In inspector, below material's properties, there should be two fields with `None` value.
-First one can be anything, that's name of asset bundle you'll load in-game. Second one must be `.assets`
+First one can be anything, that's the name of the asset bundle you'll load in-game. Second one must be `.assets`
 
 After that, right click anywhere in file viewer, and select "Build AssetBundles". If you did `Add builder` step correctly, it should appear.
-Just select your bundle, and it'll be builded.
+Just select your bundle, and it'll be built.
 
 # Using bundle in mod
 
@@ -40,7 +40,7 @@ After your bundle was builded, it should appear in `Assets/AssetBundles`.
 You can drag it from unity to file explorer. Put it somewhere in your mod, and add that resource, just like any sprite you add.
 
 :::note
-See more about loading sprites [here](./resouces)
+See more about loading sprites [here](./resources)
 :::
 
 ## Using shader in-game
