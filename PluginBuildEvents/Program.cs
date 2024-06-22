@@ -124,6 +124,44 @@ namespace PluginBuildEvents
                 if (File.Exists(origMdb)) File.Copy(origMdb, newMdb, true);
             }
 
+            string dllName = Path.GetFileName(origDll);
+            string? refPath = FindFolderWithName(Environment.CurrentDirectory, ".ref");
+
+            if (refPath is null)
+            {
+                Console.WriteLine("Couldn't find refPath!");
+                return;
+            }
+
+            refPath += "/";
+
+
+            if (dllName == "RogueLibsCore.dll" && Directory.Exists(refPath))
+            {
+                File.Copy(origDll, refPath + "RogueLibsCore.dll", true);
+                string origXml = Path.ChangeExtension(origDll, ".xml");
+                if (File.Exists(origXml))
+                {
+                    File.Copy(origXml, refPath + "RogueLibsCore.xml", true);
+                }
+                if (File.Exists(origPdb))
+                {
+                    File.Copy(origPdb, refPath + "RogueLibsCore.pdb", true);
+                }
+            }
+
+        }
+
+        static string? FindFolderWithName(string directory, string targetName)
+        {
+            string path = Path.Combine(directory, targetName);
+            while (!Directory.Exists(path))
+            {
+                directory = Path.GetDirectoryName(directory)!;
+                if (directory is null) return null;
+                path = Path.Combine(directory, targetName);
+            }
+            return path;
         }
     }
 }
