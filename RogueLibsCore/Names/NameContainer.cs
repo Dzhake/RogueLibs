@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 
 namespace RogueLibsCore
 {
@@ -22,7 +21,6 @@ namespace RogueLibsCore
                 => dict.TryGetValue(code, out string? value) ? value : null;
         }
 
-        [MustUseReturnValue]
         public static object? Set(object? container, LanguageCode code, string? value)
         {
             if (container is null)
