@@ -21,6 +21,7 @@ namespace RogueLibsCore
             RogueFramework.EffectFactories.Add(EffectFactory);
             RogueFramework.NameProviders.Add(NameProvider);
             RogueFramework.NameProviders.Add(new DialogueNameProvider());
+            RogueFramework.BigQuestFactories.Add(BigQuestFactory);
         }
 
         /// <summary>
@@ -53,6 +54,7 @@ namespace RogueLibsCore
         internal static readonly CustomTraitFactory TraitFactory = new CustomTraitFactory();
         internal static readonly CustomEffectFactory EffectFactory = new CustomEffectFactory();
         internal static readonly CustomNameProvider NameProvider = new CustomNameProvider();
+        internal static readonly CustomBigQuestFactory BigQuestFactory = new CustomBigQuestFactory();
 
         /// <summary>
         ///   <para>Creates a <typeparamref name="TItem"/> custom item. Chain "With" methods to attach extra information.</para>
@@ -183,6 +185,17 @@ namespace RogueLibsCore
             }
             else RogueLibsPlugin.preparedClips.Add(clip);
             return clip;
+        }
+
+        /// <summary>
+        ///   <para>Creates a <typeparamref name="TBigQuest"/> custom big quest. Chain "With" methods to attach extra information.</para>
+        /// </summary>
+        /// <typeparam name="TBigQuest">The <see cref="CustomBigQuest"/> type. Must have a parameterless constructor.</typeparam>
+        /// <returns>An <see cref="BigQuestBuilder"/> with the specified ability's metadata.</returns>
+        public static BigQuestBuilder CreateCustomBigQuest<TBigQuest>() where TBigQuest : CustomBigQuest, new()
+        {
+            CustomBigQuestMetadata metadata = BigQuestFactory.AddQuest<TBigQuest>();
+            return new BigQuestBuilder(metadata);
         }
 
         /// <summary>

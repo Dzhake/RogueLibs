@@ -91,6 +91,11 @@ namespace RogueLibsCore
         public static readonly List<INameProvider> NameProviders = new List<INameProvider>();
 
         /// <summary>
+        ///   <para>The list of big quest hook factories, used by RogueLibs.</para>
+        /// </summary>
+        public static readonly List<IHookFactory> BigQuestFactories = new();
+
+        /// <summary>
         ///   <para>The list of all unlocks in the game, including the vanilla ones too.</para>
         /// </summary>
         public static readonly List<UnlockWrapper> Unlocks = new List<UnlockWrapper>();
