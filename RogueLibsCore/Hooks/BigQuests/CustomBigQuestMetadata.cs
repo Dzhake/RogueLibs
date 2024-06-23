@@ -16,7 +16,7 @@ namespace RogueLibsCore
         ///   <para>Returns a <see cref="CustomName"/> associated with this big quest's name.</para>
         /// </summary>
         /// <returns>The <see cref="CustomName"/> associated with this big quest's name, if found; otherwise, <see langword="null"/>.</returns>
-        public CustomName? GetName() => RogueLibs.NameProvider.FindEntry(Name, NameTypes.BigQuest);
+        public CustomName? GetName() => RogueLibs.NameProvider.FindEntry(Name, NameTypes.Unlock);
         /// <summary>
         ///   <para>Returns an <see cref="BigQuestUnlock"/> associated with this big quest.</para>
         /// </summary>

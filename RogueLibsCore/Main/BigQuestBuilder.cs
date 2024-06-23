@@ -38,7 +38,7 @@ namespace RogueLibsCore
         /// <exception cref="ArgumentException">A localizable string that acts as the big quest's name already exists.</exception>
         public BigQuestBuilder WithName(CustomNameInfo info)
         {
-            Name = RogueLibs.CreateCustomName(Metadata.Name, NameTypes.Item, info);
+            Name = RogueLibs.CreateCustomName(Metadata.Name + "_BQ", NameTypes.Unlock, info);
             return this;
         }
 
@@ -50,14 +50,14 @@ namespace RogueLibsCore
         /// <exception cref="ArgumentException">A localizable string that acts as the big quest's description already exists.</exception>
         public BigQuestBuilder WithDescription(CustomNameInfo info)
         {
-            Description = RogueLibs.CreateCustomName(Metadata.Name, NameTypes.Description, info);
+            Description = RogueLibs.CreateCustomName($"D_{Metadata.Name}_BQ", NameTypes.Unlock, info);
             return this;
         }
         /// <summary>
         ///   <para>Creates a default <see cref="BigQuestUnlock"/> for the big quest, that is unlocked by default.</para>
         /// </summary>
         /// <returns>The current instance of <see cref="BigQuestBuilder"/>, for chaining purposes.</returns>
-        public BigQuestBuilder WithUnlock() => WithUnlock(new BigQuestUnlock(Metadata.Name, true));
+        public BigQuestBuilder WithUnlock() => WithUnlock(new BigQuestUnlock(Metadata.Name + "_BQ", true));
 
         /// <summary>
         ///   <para>Creates the specified <paramref name="unlock"/> for the big quest.</para>

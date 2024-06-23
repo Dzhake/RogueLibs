@@ -14,7 +14,7 @@ namespace RogueLibsCore
         /// <inheritdoc/>
         public override bool TryCreate(Agent? instance, out IHook<Agent> hook)
         {
-            if (instance?.bigQuest != null && bigQuestsDict.TryGetValue(instance.bigQuest, out BigQuestEntry entry))
+            if (instance?.bigQuest != null && !GameController.gameController.mainGUI.openedCharacterCreation && bigQuestsDict.TryGetValue(instance.bigQuest, out BigQuestEntry entry))
             {
                 hook = entry.Initializer();
                 if (hook is CustomBigQuest custom)

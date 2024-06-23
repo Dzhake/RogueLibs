@@ -38,5 +38,22 @@ namespace RogueLibsCore
 
             return false;
         }
+
+        /// <summary>
+        ///   <para>Method which should return true is quest is completed. Checks "gc.playerAgent.bigQuestObjectCountTemp >= gc.playerAgent.bigQuestObjectCountTotalTemp" by default</para>
+        /// </summary>
+        public virtual bool CheckCompleted()
+        {
+            return gc.playerAgent.bigQuestObjectCountTemp >= gc.playerAgent.bigQuestObjectCountTotalTemp;
+        }
+
+        public virtual void SetupQuestMarkers()
+        {
+            //TODO Quests.IEnumerator SetupQuestMarkers2(Quest newQuest, bool cantCreateOnClient1)
+        }
+
+        //public void CreateQuestMarker(PlayfieldObject myObject, Quest newQuest, string markerType, string homeBaseMarkerType)
+
+
     }
 }

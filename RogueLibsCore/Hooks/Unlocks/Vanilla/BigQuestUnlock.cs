@@ -170,6 +170,8 @@ namespace RogueLibsCore
                     }
                 }
             }
+
+            if (agentName.StartsWith("E_")) return name;
             return $"{name} ({agentName})";
         }
         /// <inheritdoc/>

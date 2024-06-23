@@ -20,6 +20,8 @@ namespace RogueLibsCore
             Patcher.Postfix(typeof(Updater), "LateUpdate");
             // IDoFixedUpdate.FixedUpdate
             Patcher.Postfix(typeof(Updater), "FixedUpdate");
+            // ITriggerOnLevelStart
+            Patcher.Postfix(typeof(LoadLevel), nameof(LoadLevel.SetupMore5));
 
             // load prepared AudioClips
             Patcher.Prefix(typeof(AudioHandler), nameof(AudioHandler.SetupDics), nameof(AudioHandler_SetupDics_Prefix));
@@ -34,6 +36,7 @@ namespace RogueLibsCore
             Patcher.Postfix(typeof(PlayfieldObject), nameof(PlayfieldObject.RecycleAwake));
             // custom Discord links
             Patcher.Prefix(typeof(MenuGUI), nameof(MenuGUI.PressedDiscordButton));
+
 
             Patcher.AnyErrors();
 
@@ -96,6 +99,11 @@ namespace RogueLibsCore
         {
             if (GameController.gameController.levelTransitioning) return;
             HookEvents.fixedUpdateDispatcher.DispatchEvent(static h => h.FixedUpdate());
+        }
+
+        public static void LoadLevel_SetupMore5()
+        {
+            HookEvents.triggerOnLevelStartDispatcher.DispatchEvent(static h => h.LevelStart());
         }
 
         // ReSharper disable once IdentifierTypo

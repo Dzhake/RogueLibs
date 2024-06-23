@@ -37,9 +37,5 @@
         ///   <para>The name type for the agent dialogues.</para>
         /// </summary>
         public const string Dialogue = "Dialogue";
-        /// <summary>
-        ///   <para>The name type for the names of big quests.</para>
-        /// </summary>
-        public const string BigQuest = "BigQuest";
     }
 }

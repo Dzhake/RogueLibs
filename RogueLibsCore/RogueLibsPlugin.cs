@@ -55,6 +55,7 @@ namespace RogueLibsCore
             PatchAgents();
             PatchInteractions();
             PatchAgentInteractions();
+            PatchQuests();
 #if DEBUG
             Patcher.SortResults();
             Patcher.LogResults();
