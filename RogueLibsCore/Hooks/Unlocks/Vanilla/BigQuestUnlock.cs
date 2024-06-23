@@ -46,7 +46,7 @@ namespace RogueLibsCore
             {
                 if (Menu is not CustomCharacterCreation cc)
                     throw new InvalidOperationException("The unlock is not in the character creation menu.");
-                return cc.CC.bigQuestChosen == Agent?.Name;
+                return cc.CC.bigQuestChosen == Agent?.Name || cc.CC.bigQuestChosen == Name.Remove(Name.Length - 3);
             }
             set
             {
@@ -54,7 +54,7 @@ namespace RogueLibsCore
                     throw new InvalidOperationException("The unlock is not in the character creation menu.");
                 bool cur = IsAddedToCC;
                 if (cur && !value) cc.CC.bigQuestChosen = "";
-                else if (!cur && value) cc.CC.bigQuestChosen = Agent?.Name ?? string.Empty;
+                else if (!cur && value) cc.CC.bigQuestChosen = Agent?.Name ?? Name.Remove(Name.Length - 3);
             }
         }
 
@@ -185,7 +185,7 @@ namespace RogueLibsCore
                 string? text = GetDescription();
                 AddCancellationsTo(ref text);
                 AddRecommendationsTo(ref text);
-                if (!IsUnlocked)
+                if (!IsUnlocked)    
                     AddPrerequisitesTo(ref text);
                 return text ?? string.Empty;
             }
