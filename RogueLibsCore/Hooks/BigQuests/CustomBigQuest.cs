@@ -40,13 +40,22 @@ namespace RogueLibsCore
         }
 
         /// <summary>
-        ///   <para>Setup quest markers here</para>
+        ///   <para>Setup quest markers here.</para>
         /// </summary>
         public abstract void SetupQuestMarkers();
 
         /// <summary>
-        ///   <para>This should return text which will be displayed in map menu</para>
+        ///   <para>This should return text which will be displayed in map menu.</para>
         /// </summary>
         public abstract string GetProgress();
+
+        /// <summary>
+        ///  <para>Determines whether an object is related to this big quest. Uses <see cref="PlayfieldObject.isBigQuestObject"/> by default.</para>
+        /// </summary>
+        /// <param name="Object">You need return is this related to big quest or no.</param>
+        public virtual bool IsBigQuestObject(PlayfieldObject Object)
+        {
+            return Object.isBigQuestObject;
+        }
     }
 }

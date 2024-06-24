@@ -9,6 +9,7 @@ namespace RogueLibsCore
     internal sealed partial class RogueLibsPlugin
     {
         private static readonly MethodInfo Quests_SpawnBigQuestCompletedText = AccessTools.Method(typeof(Quests), "SpawnBigQuestCompletedText");
+        private static CustomBigQuest? quest => GameController.gameController.playerAgent.GetHook<CustomBigQuest>();
 
         public void PatchQuests()
         {
@@ -17,6 +18,7 @@ namespace RogueLibsCore
             Patcher.Postfix(typeof(Quests), nameof(Quests.CheckIfBigQuestFinishedElevator));
             Patcher.Postfix(typeof(Quests), nameof(Quests.BigQuestUpdate));
             Patcher.Postfix(typeof(Quests), nameof(Quests.setupQuests));
+            Patcher.Postfix(typeof(Quests), nameof(Quests.CheckIfBigQuestObject));
 
             Patcher.AnyErrors();
         }
@@ -35,7 +37,6 @@ namespace RogueLibsCore
 
         public static void QuestSlotBig_GetQuestInfo(QuestSlotBig __instance)
         {
-            CustomBigQuest? quest = GameController.gameController.playerAgent.GetHook<CustomBigQuest>();
             if (quest is null) return;
             __instance.questDescription.text = quest.GetProgress();
         }
@@ -52,7 +53,6 @@ namespace RogueLibsCore
         public static void Quests_BigQuestUpdate(Quests __instance)
         {
             Agent agent = GameController.gameController.playerAgent;
-            CustomBigQuest? quest = agent.GetHook<CustomBigQuest>();
             if (quest is null || agent.completingBigQuestLevel || agent.failingBigQuestLevel) return;
             if (!agent.completedBigQuestLevel && quest.CheckCompleted())
             {
@@ -60,11 +60,16 @@ namespace RogueLibsCore
             }
         }
 
-        public static void Quests_setupQuests(Quests __instance)
+        public static void Quests_setupQuests()
         {
-            CustomBigQuest? quest = GameController.gameController.playerAgent.GetHook<CustomBigQuest>();
             if (quest is null) return;
             quest.SetupQuestMarkers();
+        }
+
+        public static void Quests_CheckIfBigQuestObject(PlayfieldObject myObject, ref bool __result)
+        {
+            if (quest is null) return;
+            __result = quest.IsBigQuestObject(myObject);
         }
     }
 }
