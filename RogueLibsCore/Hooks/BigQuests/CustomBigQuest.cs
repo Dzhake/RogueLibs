@@ -40,22 +40,13 @@ namespace RogueLibsCore
         }
 
         /// <summary>
-        ///   This should return true is quest is failed.
+        ///   <para>Setup quest markers here</para>
         /// </summary>
-        public virtual bool CheckFailed()
-        {
-            return false;
-        }
+        public abstract void SetupQuestMarkers();
 
-        public virtual void SetupQuestMarkers()
-        {
-            //TODO Quests.IEnumerator SetupQuestMarkers2(Quest newQuest, bool cantCreateOnClient1)
-        }
-
+        /// <summary>
+        ///   <para>This should return text which will be displayed in map menu</para>
+        /// </summary>
         public abstract string GetProgress();
-
-        //public void CreateQuestMarker(PlayfieldObject myObject, Quest newQuest, string markerType, string homeBaseMarkerType)
-
-
     }
 }

@@ -8,8 +8,7 @@ namespace RogueLibsCore
 {
     internal sealed partial class RogueLibsPlugin
     {
-        private static MethodInfo Quests_SpawnBigQuestCompletedText = AccessTools.Method(typeof(Quests), "SpawnBigQuestCompletedText");
-        private static MethodInfo Quests_SpawnBigQuestFailedText = AccessTools.Method(typeof(Quests), "SpawnBigQuestFailedText");
+        private static readonly MethodInfo Quests_SpawnBigQuestCompletedText = AccessTools.Method(typeof(Quests), "SpawnBigQuestCompletedText");
 
         public void PatchQuests()
         {
@@ -17,6 +16,7 @@ namespace RogueLibsCore
             Patcher.Postfix(typeof(QuestSlotBig), nameof(QuestSlotBig.GetQuestInfo));
             Patcher.Postfix(typeof(Quests), nameof(Quests.CheckIfBigQuestFinishedElevator));
             Patcher.Postfix(typeof(Quests), nameof(Quests.BigQuestUpdate));
+            Patcher.Postfix(typeof(Quests), nameof(Quests.setupQuests));
 
             Patcher.AnyErrors();
         }
@@ -58,10 +58,13 @@ namespace RogueLibsCore
             {
                 __instance.StartCoroutine((IEnumerator)Quests_SpawnBigQuestCompletedText.Invoke(__instance, [agent]));
             }
-            else if (quest.CheckFailed())
-            {
-                __instance.StartCoroutine((IEnumerator)Quests_SpawnBigQuestFailedText.Invoke(__instance, [agent]));
-            }
+        }
+
+        public static void Quests_setupQuests(Quests __instance)
+        {
+            CustomBigQuest? quest = GameController.gameController.playerAgent.GetHook<CustomBigQuest>();
+            if (quest is null) return;
+            quest.SetupQuestMarkers();
         }
     }
 }
