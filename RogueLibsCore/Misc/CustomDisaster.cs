@@ -58,11 +58,15 @@ namespace RogueLibsCore
         /// <summary>
         ///   <para>Initializes the custom disaster.</para>
         /// </summary>
-        public abstract void Start();
+        public virtual void Start() {}
+        /// <summary>
+        ///   <para>Called after disaster notification hides.</para>
+        /// </summary>
+        public virtual void StartAfterNotification() {}
         /// <summary>
         ///   <para>Finishes and cleans up after the custom disaster.</para>
         /// </summary>
-        public abstract void Finish();
+        public virtual void Finish() {}
         /// <summary>
         ///   <para>Updates the custom disaster using a <see cref="Coroutine"/>; starts after the notification is displayed. Return <see langword="null"/>, if no updating is needed.</para>
         /// </summary>

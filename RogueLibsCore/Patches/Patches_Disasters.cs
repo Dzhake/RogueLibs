@@ -123,6 +123,7 @@ namespace RogueLibsCore
                 CustomDisaster? custom = RogueFramework.GetActiveDisaster();
                 if (custom is not null && GameController.gameController.serverPlayer)
                 {
+                    custom.StartAfterNotification();
                     IEnumerator? updating = custom.Updating();
                     if (updating is not null)
                         __instance.StartCoroutine(updating);
