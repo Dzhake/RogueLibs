@@ -36,7 +36,7 @@ namespace RogueLibsCore
         /// <summary>
         ///   <para>Gets the disaster's removal mutator unlock.</para>
         /// </summary>
-        public MutatorUnlock? RemovalMutator { get; private set; }
+        public RemovalMutator? removalMutator { get; private set; }
 
         /// <summary>
         ///   <para>Creates a localizable string with the specified localization <paramref name="info"/> to act as the disaster's name.</para>
@@ -78,14 +78,20 @@ namespace RogueLibsCore
         ///   <para>Creates a removal mutator for this disaster.</para>
         /// </summary>
         /// <returns>The current instance of <see cref="DisasterBuilder"/>, for chaining purposes.</returns>
-        public DisasterBuilder WithRemovalMutator()
+        public DisasterBuilder WithRemovalMutator(CustomNameInfo displayName = default)
         {
-            RogueLibs.CreateCustomUnlock(RemovalMutator = new MutatorUnlock("NoD_" + Metadata.Name, true)
+            RogueLibs.CreateCustomUnlock(removalMutator = new RemovalMutator("NoD_" + Metadata.Name, true, displayName)
             {
                 IsAvailableInDailyRun = false,
             });
+
             return this;
         }
 
+        public class RemovalMutator(string name, bool unlockedFromStart, CustomNameInfo displayName = default)
+            : MutatorUnlock(name, unlockedFromStart)
+        {
+            public override string GetFancyName() => displayName.GetCurrent() ?? $"E_{Name}";
+        }
     }
 }
