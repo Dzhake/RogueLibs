@@ -10,6 +10,7 @@ namespace RogueLibsCore
 {
     internal sealed partial class RogueLibsPlugin
     {
+        private static GameController gc => GameController.gameController;
         public void PatchDisasters()
         {
             // use CustomDisaster.AllowTeleport
@@ -132,6 +133,12 @@ namespace RogueLibsCore
         }
         public static void LevelFeelings_StartLevelFeelings()
         {
+            CustomDisaster? forced = RogueFramework.CustomDisasters.FindLast(static d => d.TestForced());
+            if (forced is not null)
+            {
+                gc.levelFeeling = forced.Metadata.Name;
+            }
+
             CustomDisaster? custom = RogueFramework.GetActiveDisaster();
             custom?.Start();
         }
