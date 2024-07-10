@@ -34,7 +34,7 @@ This modding library does nothing on its own, but it provides methods for other 
 ### Links
 - [Download RogueLibs (latest stable version)](https://github.com/Dzhake/RogueLibs/releases/latest)
 - [Steam guide on modding with BepInEx](https://steamcommunity.com/sharedfiles/filedetails/?id=2106187116)
-- [RogueLibs' site](https://Dzhake.github.io/RogueLibs)
+- [RogueLibs' site](https://roguelibs-web.vercel.app/)
 
 ### Contributing
 
