@@ -50,12 +50,11 @@ pages:
 - custom-interactions:
   - create-interaction
 
-- custom-disasters:
-  - create-disaster
 
 - custom-unlocks:
   - custom-unlocks
   - configuring-unlocks
+
 
 ---
 section: Extra Stuff
@@ -65,9 +64,11 @@ pages:
   - custom-names
   - custom-languages
   - custom-name-providers
-- misc/resources
+- resources:
+  - resources
+  - shaders  
+- misc/create-disaster
 - misc/utilities
-- misc/shaders
 
 ---
 section: Advanced
