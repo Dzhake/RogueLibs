@@ -19,20 +19,21 @@ public class MyAwesomeDisaster : CustomDisaster
 }
 ```
 
-There are 3 methods that you need to implement:
+There are 4 methods that you can implement:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeDisaster.cs"
 public class MyAwesomeDisaster : CustomDisaster
 {
     // highlight-start
     public override void Start() { /* ... */ }
+    public override void StartAfterNotification() { /* ... */}
     public override void Finish() { /* ... */ }
     public override IEnumerator? Updating() { /* ... */ }
     // highlight-end
 }
 ```
 
-`Start` is called when the disaster starts. `Finish` is called when the disaster ends.
+`Start` is called when the disaster starts. `Finish` is called when the disaster ends. `StartAfterNotification` is called when the notification message hides.
 
 :::caution{title="Start and Finish methods"}
 These methods are called between levels, so some stuff might not be available at the time they're called.
@@ -96,10 +97,6 @@ public class MyAwesomeDisaster : CustomDisaster
     // highlight-end
 }
 ```
-
-:::caution{title="Current limitations"}
-At the moment, `TestForced` cannot force a disaster onto a non-disastrous level. It only works on levels that normally have disasters: \*-3 (or \*-2 with Quick Game on), or every level with the Disasters Every Level mutator.
-:::
 
 ## Disaster Settings {#disaster-settings}
 

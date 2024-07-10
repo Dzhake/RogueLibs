@@ -67,7 +67,7 @@ pages:
 - resources:
   - resources
   - shaders  
-- misc/create-disaster
+- misc/custom-disaster
 - misc/utilities
 
 ---
