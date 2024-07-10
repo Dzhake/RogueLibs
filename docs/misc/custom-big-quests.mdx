@@ -1,0 +1,174 @@
+---
+title: Creating a Custom Big Quest
+description: With RogueLibs you can easily create custom big quests
+---
+
+## `CustomBigQuest` class {#custombigquest}
+
+To make a custom big quest, you need to create a class deriving from `CustomBigQuest`:
+
+```csharp title="/MyAwesomeProject/MyBigQuest.cs"
+// highlight-next-line
+public class MyAwesomeBigQuest : CustomBigQuest
+{
+    /* ... */
+}
+```
+
+These are methods that you can override:
+
+```csharp title="/MyAwesomeProject/MyBigQuest.cs"
+public class MyAwesomeBigQuest : CustomBigQuest
+{
+    // highlight-start
+    public override void Update() { /* ... */ }
+    public override void SetupQuestMarkers() { /* ... */ }
+    public override bool CheckCompleted() { /* ... */}
+    public override bool IsBigQuestObject(PlayfieldObject Object) { /* ... */}
+    public override string GetProgress() { /* ... */ }
+    // highlight-end
+}
+```
+
+`Update` is called every frame when your big quest is active.
+`SetupQuestMarkers` is called once per level
+`CheckCompleted` returns `true` if big quest is completed on this floor otherwise `false`
+`IsBigQuestObject` returns `true` if object is related to big quest, you can use this if `Object.isBigQuestObject` is not enough. This also affects map markers.
+`GetProgress` returns string, which is displayed at map's to right. You probably want to have description and actual progress there.
+
+## Initialization {#initialization}
+
+Just call the `CreateCustomBigQuest` method with your big quest's type as a parameter:
+
+```csharp title="/MyAwesomeProject/MyAwesomeBigQuest.cs"
+public class MyAwesomeBigQuest : CustomBigQuest
+{
+    [RLSetup]
+    public static void Setup()
+    {
+        // highlight-next-line
+        RogueLibs.CreateCustomBigQuest<MyAwesomeBigQuest>();
+    }
+}
+```
+
+:::note
+See more about the `RLSetup` attribute [here](../misc/utilities#rlsetup).
+:::
+
+You can set your big quest's name and description using `WithName` and `WithDescription` methods:
+
+```csharp title="/MyAwesomeProject/MyAwesomeBigQuest.cs"
+public class MyAwesomeBigQuest : CustomBigQuest
+{
+    [RLSetup]
+    public static void Setup()
+    {
+        RogueLibs.CreateCustomBigQuest<MyAwesomeBigQuest>()
+            // highlight-start
+            .WithName(new CustomNameInfo("My Awesome Disaster"))
+            .WithDescription(new CustomNameInfo("My Awesome Disaster is very cool and does a lot of great stuff, and it's also awesome."));
+            // highlight-end
+    }
+}
+```
+
+:::info
+See [Custom Names](../localization/custom-names) for more info.
+:::
+
+## Examples {#examples}
+
+<Tabs>
+<TabItem value="Anti Slavery Service">
+
+A simple big quest, where you need to free all slaves on each level.
+
+```csharp title="/MyAwesomeProject/AntiSlaveryService.cs"
+using RogueLibsCore;
+
+namespace MyAwesomeMod
+{
+    public class AntiSlaveryService : CustomBigQuest, IDoUpdate
+    {
+        private bool Failed;
+
+        [RLSetup]
+        public static void Setup()
+        {
+            RogueLibs.CreateCustomBigQuest<AntiSlaveryService>()
+                .WithUnlock(new BigQuestUnlock(nameof(AntiSlaveryService)))
+                .WithName(new("[DS] Anti-Slavery Service"))
+                .WithDescription(new("Higher levels are going to enslave all of us, we need to free all slaves before they do that!"));
+        }
+
+        public void Update()
+        {
+            int cur = 0;
+            int total = 0;
+
+            foreach (Agent agent2 in gc.agentList)
+            {
+                if (agent2.hasFormerSlaveOwner)
+                {
+                    cur++;
+                    total++;
+                    agent2.noBigQuestMarker = true;
+                }
+                else if ((agent2.slaveOwners?.Count ?? 0) > 0 )
+                {
+                    total++;
+                }
+            }
+
+            if (total < Total)
+            {
+                Failed = true;
+            }
+
+            Current = cur;
+        }
+
+        public override void SetupQuestMarkers()
+        {
+            foreach (Agent agent2 in gc.agentList)
+            {
+                if (agent2.slaveOwners.Count > 0)
+                {
+                    Total++;
+                    agent2.isBigQuestObject = true;
+                    agent2.noBigQuestMarker = false;
+                    agent2.bigQuestType = nameof(AntiSlaveryService);
+                    agent2.showBigQuestMarker = true;
+                    agent2.bigQuestMarkerAlwaysSeen = true;
+                    if (!gc.quests.bigQuestObjectList.Contains(agent2))
+                    {
+                        gc.quests.bigQuestObjectList.Add(agent);
+                    }
+                    agent2.SpawnNewMapMarker();
+                }
+            }
+        }
+
+
+        public override string GetProgress()
+        {
+            const string desc = "Free all slaves!\n";
+            string text = $"<color=white>Floor: {Current}/{Total}</color>";
+            if (Current == Total)
+            {
+                text = "<color=lime>Floor Clear!</color>";
+            }
+
+            if (Failed)
+            {
+                text = "<color=red>Failed!</color>";
+            }
+            return desc + text;
+        }
+    }
+}
+```
+
+</TabItem>
+</Tabs>
