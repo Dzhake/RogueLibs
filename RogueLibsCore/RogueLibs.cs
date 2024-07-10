@@ -19,6 +19,7 @@ namespace RogueLibsCore
             RogueFramework.ItemFactories.Add(ItemFactory);
             RogueFramework.TraitFactories.Add(TraitFactory);
             RogueFramework.EffectFactories.Add(EffectFactory);
+            RogueFramework.AgentFactories.Add(AgentFactory);
             RogueFramework.NameProviders.Add(NameProvider);
             RogueFramework.NameProviders.Add(new DialogueNameProvider());
             RogueFramework.BigQuestFactories.Add(BigQuestFactory);
@@ -53,6 +54,7 @@ namespace RogueLibsCore
         internal static readonly CustomItemFactory ItemFactory = new CustomItemFactory();
         internal static readonly CustomTraitFactory TraitFactory = new CustomTraitFactory();
         internal static readonly CustomEffectFactory EffectFactory = new CustomEffectFactory();
+        internal static readonly CustomAgentFactory AgentFactory = new CustomAgentFactory();
         internal static readonly CustomNameProvider NameProvider = new CustomNameProvider();
         internal static readonly CustomBigQuestFactory BigQuestFactory = new CustomBigQuestFactory();
 
@@ -108,6 +110,17 @@ namespace RogueLibsCore
             CustomDisasterMetadata metadata = CustomDisasterMetadata.Get<TDisaster>();
             RogueFramework.CustomDisasters.Add(new TDisaster());
             return new DisasterBuilder(metadata);
+        }
+
+        /// <summary>
+        ///   <para>Creates a <typeparamref name="TAgent"/> custom agent. Chain "With" methods to attach extra information.</para>
+        /// </summary>
+        /// <typeparam name="TAgent">The <see cref="CustomAgent"/> type. Must have a parameterless constructor.</typeparam>
+        /// <returns>An <see cref="AgentBuilder"/> with the specified agent's metadata.</returns>
+        public static AgentBuilder CreateCustomAgent<TAgent>() where TAgent : CustomAgent, new()
+        {
+            CustomAgentMetadata metadata = AgentFactory.AddAgent<TAgent>();
+            return new AgentBuilder(metadata);
         }
 
         /// <summary>
