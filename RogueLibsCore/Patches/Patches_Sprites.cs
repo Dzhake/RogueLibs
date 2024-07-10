@@ -215,6 +215,57 @@ namespace RogueLibsCore
                 RogueSprite? gunSpr = __instance.agent.gun.gunSprite.CurrentSprite.GetHook();
                 if (gunSpr is not null) __instance.agent.gun.gunSpriteRenderer.sharedMaterial = gunSpr.Material;
             }
+
+            // Coloring for custom agents
+            for (int j = 0; j < agentSpriteList.Count; j++)
+            {
+                tk2dSprite sprite = agentSpriteList[j];
+
+                CustomAgentMetadata? metadata = __instance.agent.GetHook<CustomAgent>()?.Metadata;
+                if (metadata is not null)
+                {
+                    if (sprite.name.Contains("FacialHair"))
+                    {
+                        sprite.color = metadata.facialHairColor;
+                    }
+                    if (sprite.name.Contains("Hair"))
+                    {
+                        sprite.color = metadata.hairColor;
+                    }
+                    if (sprite.name.Contains("Head"))
+                    {
+                        sprite.color = metadata.headColor;
+                    }
+                    if (sprite.name.Contains("Eyes"))
+                    {
+                        sprite.color = metadata.eyesColor;
+                    }
+                    if (sprite.name.Contains("Body"))
+                    {
+                        sprite.color = metadata.bodyColor;
+                    }
+                    if (sprite.name.Contains("Arm1"))
+                    {
+                        sprite.color = metadata.arm1Color;
+                    }
+                    if (sprite.name.Contains("Arm2"))
+                    {
+                        sprite.color = metadata.arm2Color;
+                    }
+                    if (sprite.name.Contains("Leg1"))
+                    {
+                        sprite.color = metadata.leg1Color;
+                    }
+                    if (sprite.name.Contains("Leg2"))
+                    {
+                        sprite.color = metadata.leg2Color;
+                    }
+                    if (sprite.name.Contains("Footwear"))
+                    {
+                        sprite.color = metadata.footwearColor;
+                    }
+                }
+            }
         }
         public static void ObjectSprite_SetAgentHighlight(ObjectSprite __instance, int i)
         {
