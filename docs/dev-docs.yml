@@ -26,6 +26,10 @@ pages:
   - rechargeable-items
   - inventory-checks
 
+- custom-agents:
+  - create-agent
+  - agent-colors
+
 - custom-weapons:
   - create-weapon
   - melee-weapons

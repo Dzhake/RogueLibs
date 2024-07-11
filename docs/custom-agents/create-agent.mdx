@@ -1,0 +1,138 @@
+---
+title: Creating a Custom Agent
+description: "RogueLibs provides classe and methods to create agents. Custom agents are initialized and integrated into the game using the RogueLibs.CreateCustomAgent<TAgent>() method."
+---
+
+# Creating a Custom Agent
+
+RogueLibs provides classes and methods to create agents. Custom agents are initialized and integrated into the game using the `RogueLibs.CreateCustomAgent<TAgent>()` method.
+
+## `CustomAgent` class {#customagent}
+
+To make a custom agent, you need to create a class deriving from `CustomAgent`:
+
+```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+public class MyAwesomeAgent : CustomAgent
+{
+    /* ... */
+}
+```
+
+There's only one method that you need to implement - `SetupAgent`:
+
+```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+public class MyAwesomeAgent : CustomAgent
+{
+        public override void SetupAgent()
+        {
+            Agent.SetStrength(1);
+            Agent.SetEndurance(1);
+            Agent.SetAccuracy(1);
+            Agent.SetSpeed(1);
+
+            Agent.statusEffects.AddTrait("TheLaw");
+
+            Agent.modMeleeSkill = 0;
+            Agent.modGunSkill = 1;
+            Agent.modToughness = 1;
+            Agent.modVigilant = 0;
+        }
+}
+```
+
+This method is called only once, when the agent is created. See more info [later on this page](#setupdetails).
+
+You should add categories using the `AgentCategories` attribute instead of adding them in `SetupAgent`:
+
+```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+[ItemCategories(RogueCategories.Guns, RogueCategories.Defense, "MyAwesomeCategory")]
+public class MyAwesomeAgent : CustomAgent
+{
+    /* ... */
+}
+```
+
+:::tip{title="Pro-tip: String consts"}
+Use static types with string consts, like `RogueCategories`. This way you won't make a typo. Typos can be critical sometimes, since neither the game nor RogueLibs track all existing item categories.
+:::
+
+## Initialization {#initialization}
+
+Just call the `CreateCustomAgent` method with your agent's type as a parameter:
+
+```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+public class MyAwesomeAgent : CustomAgent
+{
+    [RLSetup]
+    public static void Setup()
+    {
+        RogueLibs.CreateCustomAgent<MyAwesomeAgent>();
+    }
+}
+```
+
+:::note
+See more about the `RLSetup` attribute [here](../misc/utilities#rlsetup).
+:::
+
+You can set your agent's name using `WithName` method:
+
+```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+public class MyAwesomeAgent : CustomAgent
+{
+    [RLSetup]
+    public static void Setup()
+    {
+        RogueLibs.CreateCustomAgent<MyAwesomeAgent>()
+            .WithName(new CustomNameInfo("My Awesome Agent"));
+    }
+}
+```
+
+You can set your agent's sprites using `WithHeadSprite` and `WithBodySprite` methods:
+
+```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+public class MyAwesomeAgent : CustomAgent
+{
+    [RLSetup]
+    public static void Setup()
+    {
+        RogueLibs.CreateCustomAgent<MyAwesomeAgent>()
+            .WithName(new CustomNameInfo("My Awesome Agent"))
+            .WithHeadSprite(Properties.Resources.MyAwesomeAgentHead)
+            .WithBodySprite(Properties.Resources.MyAwesomeAgentBody);
+    }
+    
+}
+```
+
+:::info
+See [Custom Names](../localization/custom-names), [Custom Sprites](../misc/resources) for more info.
+:::
+
+## Implementing `SetupAgent` {#setupagent}
+
+:::info{title="Work-In-Progress"}
+There so many fields, info about all collect too difficult. If you get info about some fields - ping dzhake or t.b.b in [modding channel](https://discord.com/channels/187414758536773632/433748059172896769)
+:::
+
+Alright, while the code generator is being worked on, use the following tables:
+
+Field name      | Description
+----------------|------------
+**`SetEndurance()`**  | **Set the endurance stat. Endurance determines how much health the agent will have. Formula: `Max health = (80 + enduranceStat * 20) / 3`.**
+**`SetStrength()`** | **Set the strength stat. Strength determines how much damage the agent will have in melee. Formula: `Damage = (weaponDamage * 1 + strengthStat) / 3`.**
+**`SetAccuracy()`** | **Set the accuracy stat. Accuracy determines how much damage the agent will have with range weapon. Formula: `Damage = (accuracyStat * 0.6f + moreAccuracy) / 5`.**
+**`SetSpeed()`** | **Set the speed stat. Speed determines how fast agent will be move. Formula: `Max speed = 1750 + speedStat * 250. That not final speed, actual speed: maxSpeed * 0.01`.**
+**`enduranceStatMod`**  | **Get the current endurance stat.**
+**`strengthStatMod`** | **Get the current strength stat.**
+**`accuracyStatMod`** | **Get the current accuracy stat.**
+**`speedStatMod`** | **Get the current speed stat. For get actual movement speed use `Agent.GetCurSpeed()`.**
+**`modMeleeSkill`**  | **Determines how hard fight agent in melee. Exist 0-2 values. More details in `Combat.Start()`.**
+**`modGunSkill`** | **Determines how hard fight agent in range. Affect on weapon cooldown and distance to opponent in combat. More details in `Combat.CombatCheck()` and `Combat.SetPersonalCooldown()`.**
+**`modToughness`** | **Determines how resistant agent to danger. Affect on chance to fly (?). More details in `BrainUpdate`.**
+**`modVigilant`** | **Determines how sensitive agent to noise. More details om `GoalNoiseReact`.**
+
+:::info
+Don't edit `agentName`, that agent name ID use SoR and RL, editing this break all. If needs edit `agentRealName`.
+:::
