@@ -20,13 +20,11 @@ These are methods that you can override:
 ```csharp title="/MyAwesomeProject/MyBigQuest.cs"
 public class MyAwesomeBigQuest : CustomBigQuest
 {
-    // highlight-start
     public override void Update() { /* ... */ }
     public override void SetupQuestMarkers() { /* ... */ }
     public override bool CheckCompleted() { /* ... */}
     public override bool IsBigQuestObject(PlayfieldObject Object) { /* ... */}
     public override string GetProgress() { /* ... */ }
-    // highlight-end
 }
 ```
 
@@ -46,7 +44,6 @@ public class MyAwesomeBigQuest : CustomBigQuest
     [RLSetup]
     public static void Setup()
     {
-        // highlight-next-line
         RogueLibs.CreateCustomBigQuest<MyAwesomeBigQuest>();
     }
 }
@@ -65,10 +62,8 @@ public class MyAwesomeBigQuest : CustomBigQuest
     public static void Setup()
     {
         RogueLibs.CreateCustomBigQuest<MyAwesomeBigQuest>()
-            // highlight-start
-            .WithName(new CustomNameInfo("My Awesome Disaster"))
-            .WithDescription(new CustomNameInfo("My Awesome Disaster is very cool and does a lot of great stuff, and it's also awesome."));
-            // highlight-end
+            .WithName(new CustomNameInfo("My Awesome Big Quest"))
+            .WithDescription(new CustomNameInfo("My Awesome Big Quest is very cool and does a lot of great stuff, and it's also awesome."));
     }
 }
 ```
