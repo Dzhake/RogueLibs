@@ -1,22 +1,26 @@
 ---
 title: Creating a Custom Big Quest
-description: With RogueLibs you can easily create custom big quests
+description: "RogueLibs provides classes and methods to create custom big quests, their quest markers and allows overriding their progress tracking."
 ---
+
+# Creating a Custom Big Quest
+
+RogueLibs provides classes and methods to create custom big quests, their quest markers and allows overriding their progress tracking.
 
 ## `CustomBigQuest` class {#custombigquest}
 
 To make a custom big quest, you need to create a class deriving from `CustomBigQuest`:
 
-```csharp title="/MyAwesomeProject/MyBigQuest.cs"
+```csharp title="/MyAwesomeProject/MyAwesomeBigQuest.cs"
 public class MyAwesomeBigQuest : CustomBigQuest
 {
     /* ... */
 }
 ```
 
-These are methods that you can override:
+These are the methods that you can override:
 
-```csharp title="/MyAwesomeProject/MyBigQuest.cs"
+```csharp title="/MyAwesomeProject/MyAwesomeBigQuest.cs"
 public class MyAwesomeBigQuest : CustomBigQuest
 {
     public override void Update() { /* ... */ }
@@ -27,11 +31,11 @@ public class MyAwesomeBigQuest : CustomBigQuest
 }
 ```
 
-`Update` is called every frame when your big quest is active.
-`SetupQuestMarkers` is called once per level
-`CheckCompleted` returns `true` if big quest is completed on this floor otherwise `false`
-`IsBigQuestObject` returns `true` if object is related to big quest, you can use this if `Object.isBigQuestObject` is not enough. This also affects map markers.
-`GetProgress` returns string, which is displayed at map's to right. You probably want to have description and actual progress there.
+`Update` is called every frame while your big quest is active.
+`SetupQuestMarkers` is called once per level.
+`CheckCompleted` should return `true` if the big quest is completed on this floor; otherwise, `false`.
+`IsBigQuestObject` should return `true` if an object is related to this big quest. You can use this, if just the `PlayfieldObject.isBigQuestObject` field is not enough. This also affects map markers.
+`GetProgress` returns the localized text, that's displayed to the right of the map. You'd probably want to have the big quest's description and actual progress here.
 
 ## Initialization {#initialization}
 
@@ -43,6 +47,7 @@ public class MyAwesomeBigQuest : CustomBigQuest
     [RLSetup]
     public static void Setup()
     {
+        // highlight-next-line
         RogueLibs.CreateCustomBigQuest<MyAwesomeBigQuest>();
     }
 }
@@ -61,8 +66,10 @@ public class MyAwesomeBigQuest : CustomBigQuest
     public static void Setup()
     {
         RogueLibs.CreateCustomBigQuest<MyAwesomeBigQuest>()
+            // highlight-start
             .WithName(new CustomNameInfo("My Awesome Big Quest"))
             .WithDescription(new CustomNameInfo("My Awesome Big Quest is very cool and does a lot of great stuff, and it's also awesome."));
+            // highlight-end
     }
 }
 ```

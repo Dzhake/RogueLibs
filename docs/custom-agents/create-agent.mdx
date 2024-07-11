@@ -1,17 +1,18 @@
 ---
 title: Creating a Custom Agent
-description: "RogueLibs provides classe and methods to create agents. Custom agents are initialized and integrated into the game using the RogueLibs.CreateCustomAgent<TAgent>() method."
+description: "RogueLibs provides classes and methods to create custom agents. All custom agents derive from the CustomAgent class, which provides all of the basic agent functionality. Custom agents are initialized and integrated into the game using the RogueLibs.CreateCustomAgent<TAgent>() method."
 ---
 
 # Creating a Custom Agent
 
-RogueLibs provides classes and methods to create agents. Custom agents are initialized and integrated into the game using the `RogueLibs.CreateCustomAgent<TAgent>()` method.
+RogueLibs provides classes and methods to create custom agents. All custom agents derive from the `CustomAgent` class, which provides all of the basic agent functionality. Custom agents are initialized and integrated into the game using the `RogueLibs.CreateCustomAgent<TAgent>()` method.
 
 ## `CustomAgent` class {#customagent}
 
 To make a custom agent, you need to create a class deriving from `CustomAgent`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
+// highlight-next-line
 public class MyAwesomeAgent : CustomAgent
 {
     /* ... */
@@ -23,29 +24,31 @@ There's only one method that you need to implement - `SetupAgent`:
 ```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
 public class MyAwesomeAgent : CustomAgent
 {
-        public override void SetupAgent()
-        {
-            Agent.SetStrength(1);
-            Agent.SetEndurance(1);
-            Agent.SetAccuracy(1);
-            Agent.SetSpeed(1);
+    // highlight-start
+    public override void SetupAgent()
+    {
+        Agent.SetStrength(1);
+        Agent.SetEndurance(1);
+        Agent.SetAccuracy(1);
+        Agent.SetSpeed(1);
 
-            Agent.statusEffects.AddTrait("TheLaw");
+        Agent.statusEffects.AddTrait("TheLaw");
 
-            Agent.modMeleeSkill = 0;
-            Agent.modGunSkill = 1;
-            Agent.modToughness = 1;
-            Agent.modVigilant = 0;
-        }
+        Agent.modMeleeSkill = 0;
+        Agent.modGunSkill = 1;
+        Agent.modToughness = 1;
+        Agent.modVigilant = 0;
+    }
+    // highlight-end
 }
 ```
 
-This method is called only once, when the agent is created. See more info [later on this page](#setupdetails).
+This method is called only once, when the agent is created. See more info [later on this page](#setupagent).
 
 You should add categories using the `AgentCategories` attribute instead of adding them in `SetupAgent`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
-[ItemCategories(RogueCategories.Guns, RogueCategories.Defense, "MyAwesomeCategory")]
+[AgentCategories(RogueCategories.Guns, RogueCategories.Defense, "MyAwesomeCategory")]
 public class MyAwesomeAgent : CustomAgent
 {
     /* ... */
@@ -53,7 +56,7 @@ public class MyAwesomeAgent : CustomAgent
 ```
 
 :::tip{title="Pro-tip: String consts"}
-Use static types with string consts, like `RogueCategories`. This way you won't make a typo. Typos can be critical sometimes, since neither the game nor RogueLibs track all existing item categories.
+Use static types with string consts, like `RogueCategories`. This way you won't make a typo. Typos can be critical sometimes, since neither the game nor RogueLibs track all existing agent categories.
 :::
 
 ## Initialization {#initialization}
@@ -66,6 +69,7 @@ public class MyAwesomeAgent : CustomAgent
     [RLSetup]
     public static void Setup()
     {
+        // highlight-next-line
         RogueLibs.CreateCustomAgent<MyAwesomeAgent>();
     }
 }
@@ -84,6 +88,7 @@ public class MyAwesomeAgent : CustomAgent
     public static void Setup()
     {
         RogueLibs.CreateCustomAgent<MyAwesomeAgent>()
+            // highlight-next-line
             .WithName(new CustomNameInfo("My Awesome Agent"));
     }
 }
@@ -99,10 +104,12 @@ public class MyAwesomeAgent : CustomAgent
     {
         RogueLibs.CreateCustomAgent<MyAwesomeAgent>()
             .WithName(new CustomNameInfo("My Awesome Agent"))
+            // highlight-start
             .WithHeadSprite(Properties.Resources.MyAwesomeAgentHead)
             .WithBodySprite(Properties.Resources.MyAwesomeAgentBody);
+            // highlight-end
     }
-    
+
 }
 ```
 
@@ -113,26 +120,22 @@ See [Custom Names](../localization/custom-names), [Custom Sprites](../misc/resou
 ## Implementing `SetupAgent` {#setupagent}
 
 :::info{title="Work-In-Progress"}
-There so many fields, info about all collect too difficult. If you get info about some fields - ping dzhake or t.b.b in [modding channel](https://discord.com/channels/187414758536773632/433748059172896769)
+There's a lot of fields that determine agents' properties and behaviour. If you get info about some fields, ping [Dzhake](https://discord.com/users/562171438396604416) or [T.B.B](https://discord.com/users/580833779371868161) in the [#\🔧|modding](https://discord.gg/m3zuHSwQw2).
 :::
 
-Alright, while the code generator is being worked on, use the following tables:
+Member name            | Description
+-----------------------|------------
+**`SetEndurance()`**   | **The Endurance stat.** Common range: from 0 to 3 (Endurance 1 to 4 respectively). Determines the agent's max health. Formula: `Max health = (80 + enduranceStat * 20) / 3`.
+**`SetStrength()`**    | **The Strength stat.** Common range: from 0 to 3 (Strength 1 to 4 respectively). Determines the damage of the agent's melee attacks. Formula: `Damage = (weaponDamage * 1 + strengthStat) / 3`.
+**`SetAccuracy()`**    | **The Firearms stat.** Common range: from 0 to 3 (Firearms 1 to 4 respectively). Determines the damage of the agent's ranged attacks. Formula: `Damage = (accuracyStat * 0.6f + moreAccuracy) / 5`.
+**`SetSpeed()`**       | **The Speed stat.** Common range: from 0 to 3 (Speed 1 to 4 respectively). Determines the agent's movement speed. Formula: `Max speed = 1750 + speedStat * 250.` (the actual physical speed is 1/100 of that number).
+**`modMeleeSkill`**    | **The NPC's melee skill.** Aceepts values from 0 to 2. More details in `Combat.Start()`.
+**`modGunSkill`**      | **The NPC's gun skill.** Accepts values from 0 to 2. Affects weapon cooldown and attack range. More details in `Combat.CombatCheck()` and `Combat.SetPersonalCooldown()`.
+**`modToughness`**     | **The NPC's "toughness".** Accepts values from 0 to 2. Determines how much danger an agent can be exposed to, before getting scared and fleeing. More details in `BrainUpdate`.
+**`modVigilant`**      | **The NPC's sensitivity to noise.** Accepts values from 0 to 2. More details om `GoalNoiseReact`.
 
-Field name      | Description
-----------------|------------
-**`SetEndurance()`**  | **Set the endurance stat. Endurance determines how much health the agent will have. Formula: `Max health = (80 + enduranceStat * 20) / 3`.**
-**`SetStrength()`** | **Set the strength stat. Strength determines how much damage the agent will have in melee. Formula: `Damage = (weaponDamage * 1 + strengthStat) / 3`.**
-**`SetAccuracy()`** | **Set the accuracy stat. Accuracy determines how much damage the agent will have with range weapon. Formula: `Damage = (accuracyStat * 0.6f + moreAccuracy) / 5`.**
-**`SetSpeed()`** | **Set the speed stat. Speed determines how fast agent will be move. Formula: `Max speed = 1750 + speedStat * 250. That not final speed, actual speed: maxSpeed * 0.01`.**
-**`enduranceStatMod`**  | **Get the current endurance stat.**
-**`strengthStatMod`** | **Get the current strength stat.**
-**`accuracyStatMod`** | **Get the current accuracy stat.**
-**`speedStatMod`** | **Get the current speed stat. For get actual movement speed use `Agent.GetCurSpeed()`.**
-**`modMeleeSkill`**  | **Determines how hard fight agent in melee. Exist 0-2 values. More details in `Combat.Start()`.**
-**`modGunSkill`** | **Determines how hard fight agent in range. Affect on weapon cooldown and distance to opponent in combat. More details in `Combat.CombatCheck()` and `Combat.SetPersonalCooldown()`.**
-**`modToughness`** | **Determines how resistant agent to danger. Affect on chance to fly (?). More details in `BrainUpdate`.**
-**`modVigilant`** | **Determines how sensitive agent to noise. More details om `GoalNoiseReact`.**
+{/* TODO: Use KaTeX for formulas */}
 
-:::info
-Don't edit `agentName`, that agent name ID use SoR and RL, editing this break all. If needs edit `agentRealName`.
+:::caution
+Do not edit `Agent.agentName` - that is the internal agent name, that's used by SoR and RL. Editing it may break some stuff. If you need to change the agent's displayed name, use `Agent.agentRealName` instead.
 :::

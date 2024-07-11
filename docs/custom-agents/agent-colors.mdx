@@ -1,55 +1,67 @@
 ---
 title: Coloring a Custom Agent
-description: "Custom agents can be coloring by use `AgentColors` class in `SetupAgent` method, that defines a color editing for all sprites of agent (head, body, eyes, arms and etc)"
+description: "Custom agents can be colored through the use of the Colors property available in the CustomAgent class. Notably, you can change the colors of individual limbs and body parts (unlike what vanilla SoR allows)."
 ---
 
 # Coloring a Custom Agent
 
-## Implementation `AgentColors` {#coloringcustomagent}
+Custom agents can be colored through the use of the `Colors` property available in the `CustomAgent` class. Notably, you can change the colors of individual limbs and body parts (unlike what vanilla SoR allows).
 
-To edit colors of sprites a custom agent, you need just use `AgentColors` class in `SetupAgent` method:
+## Setting colors {#setting-colors}
+
+Usually, you would only define the colors only in the `SetupAgent()` method:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
 public class MyAwesomeAgent : CustomAgent
 {
-        public override void SetupAgent()
-        {
-            Colors.Arm1Color = new Color32(105, 105, 105, 255);
-            Colors.Arm2Color = new Color32(230, 56, 10, 255);
-        }
+    public override void SetupAgent()
+    {
+        /* ... */
+
+        // highlight-start
+        Colors.Arm1Color = new Color32(105, 105, 105, 255);
+        Colors.Arm2Color = new Color32(230, 56, 10, 255);
+        // highlight-end
+    }
 }
 ```
 
 :::tip{title="Pro-tip: Transparent sprites"}
-Sets `alpha` in `Color32(R, G, B, A)` will allow you to "hide" sprite. This more reliable, than permanent clearing sprite.
+Instead of turning off or destroying sprites that you don't need, set their transparency (alpha channel) to 0 instead. It's more reliable, as vanilla code is hard-coded to re-enable them constantly.
 :::
 
 ```csharp title="/MyAwesomeProject/MyAwesomeAgent.cs"
 public class MyAwesomeAgent : CustomAgent
 {
-        public override void SetupAgent()
-        {
-            Colors.EyesColor = new Color32(0, 0, 0, 0);
-            Colors.HairColor = new Color32(0, 0, 0, 0);
-        }
+    public override void SetupAgent()
+    {
+        /* ... */
+
+        // highlight-start
+        Colors.EyesColor = new Color32(0, 0, 0, 0);
+        Colors.HairColor = new Color32(0, 0, 0, 0);
+        // highlight-end
+    }
 }
 ```
 
-## Details of `AgentColors` {#detailsagentcolors}
+## Available color properties {#available-color-properties}
 
-:::note
-Don't use original colors fields `AgentHitbox.hairColor`, `AgentHitbox.skinColor` and etc. That don't break anything, but that useless, RL override colors values.
+Property name         | Description
+----------------------|------------
+**`HairColor`**       | The color of the agent's hair. Overrides `AgentHitbox.hairColor`.
+**`FacialHairColor`** | The color of the agent's facial hair. Overrides `AgentHitbox.facialHairColor`.
+**`HeadColor`**       | The color of the agent's head. Overrides `AgentHitbox.skinColor`.
+**`EyesColor`**       | The color of the agent's eyes. Overrides `AgentHitbox.eyesColor`.
+**`BodyColor`**       | The color of the agent's body. Overrides `AgentHitbox.bodyColor`.
+**`Arm1Color`**       | The color of the agent's arm1. Overrides `AgentHitbox.skinColor`.
+**`Arm2Color`**       | The color of the agent's arm2. Overrides `AgentHitbox.skinColor`.
+**`Leg1Color`**       | The color of the agent's leg1. Overrides `AgentHitbox.legsColor`.
+**`Leg2Color`**       | The color of the agent's leg2. Overrides `AgentHitbox.legsColor`.
+**`FootwearColor`**   | The color of the agent's footwear. Overrides `AgentHitbox.footwearColor`.
+
+{/* TODO: arm1/arm2 and leg1/leg2 - which ones are left and right? */}
+
+:::caution
+Do not use original color fields, like `AgentHitbox.hairColor`, `AgentHitbox.skinColor` and etc. They're not gonna work on custom agents, since RogueLibs uses the colors from `AgentColors` instead.
 :::
-
-Field name      | Description
-----------------|------------
-**`HairColor`**  | **Represents agent hair color. Override `AgentHitbox.hairColor`.**
-**`FacialHairColor`** | **Represents agent facial hair color. Override `AgentHitbox.facialHairColor`.**
-**`HeadColor`** | **Represents agent head color. Override `AgentHitbox.skinColor`.**
-**`EyesColor`** | **Represents agent eyes color. Override `AgentHitbox.eyesColor`.**
-**`BodyColor`**  | **Represents agent body color. Override `AgentHitbox.bodyColor`.**
-**`Arm1Color`** | **Represents agent arm1 color. Override `AgentHitbox.skinColor`.**
-**`Arm2Color`** | **Represents agent arm2 color. Override `AgentHitbox.skinColor`.**
-**`Leg1Color`** | **Represents agent leg1 color. Override `AgentHitbox.legsColor`.**
-**`Leg2Color`**  | **Represents agent leg2 color. Override `AgentHitbox.legsColor`.**
-**`FootwearColor`** | **Represents agent footwear color. Override `AgentHitbox.footwearColor`.**
