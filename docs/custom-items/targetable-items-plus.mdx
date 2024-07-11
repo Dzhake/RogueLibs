@@ -12,14 +12,11 @@ Custom items can be made targetable+ (targetable anywhere) by implementing the `
 Just implement the `IItemTargetableAnywhere` interface in your item's class:
 
 ```csharp title="/MyAwesomeProject/MyTargetableAnywhereItem.cs"
-// highlight-next-line
 public class MyTargetableAnywhereItem : CustomItem, IItemTargetableAnywhere
 {
-    // highlight-start
     public bool TargetFilter(Vector2 position) { /* ... */ }
     public bool TargetPosition(Vector2 position) { /* ... */ }
     public CustomTooltip TargetCursorText(Vector2 position) { /* ... */ }
-    // highlight-end
 }
 ```
 

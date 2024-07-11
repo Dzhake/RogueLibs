@@ -11,7 +11,6 @@ Special abilities in SoR are actually implemented as items. They have `SetupDeta
 To make a custom ability, you need to create a class deriving from `CustomAbility`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeAbility.cs"
-// highlight-next-line
 public class MyAwesomeAbility : CustomAbility
 {
     /* ... */
@@ -23,10 +22,8 @@ You only need to implement 2 methods: `OnAdded` is called when a character recei
 ```csharp title="/MyAwesomeProject/MyAwesomeAbility.cs"
 public class MyAwesomeAbility : CustomAbility
 {
-    // highlight-start
     public override void OnAdded() { /* ... */ }
     public override void OnPressed() { /* ... */ }
-    // highlight-end
 }
 ```
 

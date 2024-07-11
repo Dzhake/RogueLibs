@@ -12,14 +12,11 @@ Custom items can be made targetable by implementing the `IItemTargetable` interf
 Just implement the `IItemTargetable` interface in your item's class:
 
 ```csharp title="/MyAwesomeProject/MyTargetableItem.cs"
-// highlight-next-line
 public class MyTargetableItem : CustomItem, IItemTargetable
 {
-    // highlight-start
     public bool TargetFilter(PlayfieldObject target) { /* ... */ }
     public bool TargetObject(PlayfieldObject target) { /* ... */ }
     public CustomTooltip TargetCursorText(PlayfieldObject target) { /* ... */ }
-    // highlight-end
 }
 ```
 

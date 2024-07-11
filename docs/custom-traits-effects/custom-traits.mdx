@@ -12,7 +12,6 @@ RogueLibs provides classes and methods to create custom traits, and an interface
 To make a custom trait, you need to create a class deriving from `CustomTrait`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeTrait.cs"
-// highlight-next-line
 public class MyAwesomeTrait : CustomTrait
 {
     /* ... */
@@ -24,10 +23,8 @@ There are 2 methods that you need to implement:
 ```csharp title="/MyAwesomeProject/MyAwesomeTrait.cs"
 public class MyAwesomeTrait : CustomTrait
 {
-    // highlight-start
     public override void OnAdded() { /* ... */ }
     public override void OnRemoved() { /* ... */ }
-    // highlight-end
 }
 ```
 

@@ -12,7 +12,6 @@ RogueLibs provides classes and methods to create: usable, combinable, targetable
 To make a custom item, you need to create a class deriving from `CustomItem`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeItem.cs"
-// highlight-next-line
 public class MyAwesomeItem : CustomItem
 {
     /* ... */
@@ -24,7 +23,6 @@ There's only one method that you need to implement - `SetupDetails`:
 ```csharp title="/MyAwesomeProject/MyAwesomeItem.cs"
 public class MyAwesomeItem : CustomItem
 {
-    // highlight-start
     public override void SetupDetails()
     {
         Item.itemType = ItemTypes.Tool;
@@ -34,7 +32,6 @@ public class MyAwesomeItem : CustomItem
         Item.stackable = true;
         Item.hasCharges = true;
     }
-    // highlight-end
 }
 ```
 

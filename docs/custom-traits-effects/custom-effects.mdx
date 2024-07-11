@@ -12,7 +12,6 @@ RogueLibs provides classes and methods to create custom effects, and an interfac
 To make a custom effect, you need to create a class deriving from `CustomEffect`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeEffect.cs"
-// highlight-next-line
 public class MyAwesomeEffect : CustomEffect
 {
     /* ... */
@@ -24,13 +23,11 @@ There are 5 methods that you need to implement:
 ```csharp title="/MyAwesomeProject/MyAwesomeEffect.cs"
 public class MyAwesomeEffect : CustomEffect
 {
-    // highlight-start
     public override int GetEffectTime() { /* ... */ }
     public override int GetEffectHate() { /* ... */ }
     public override void OnAdded() { /* ... */ }
     public override void OnRemoved() { /* ... */ }
     public override void OnUpdated(EffectUpdatedArgs e) { /* ... */ }
-    // highlight-end
 }
 ```
 

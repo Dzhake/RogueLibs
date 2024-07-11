@@ -12,15 +12,12 @@ Custom items can be made combinable with other items by implementing the `IItemC
 Just implement the `IItemCombinable` interface in your item's class:
 
 ```csharp title="/MyAwesomeProject/MyCombinableItem.cs"
-// highlight-next-line
 public class MyCombinableItem : CustomItem, IItemCombinable
 {
-    // highlight-start
     public bool CombineFilter(InvItem other) { /* ... */ }
     public bool CombineItems(InvItem other) { /* ... */ }
     public CustomTooltip CombineTooltip(InvItem other) { /* ... */ }
     public CustomTooltip CombineCursorText(InvItem other) { /* ... */ }
-    // highlight-end
 }
 ```
 

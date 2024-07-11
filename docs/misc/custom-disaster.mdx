@@ -12,7 +12,6 @@ You can create your own custom disasters using a `CustomDisaster` class, provide
 To make a custom disaster, you need to create a class deriving from `CustomDisaster`:
 
 ```csharp title="/MyAwesomeProject/MyAwesomeDisaster.cs"
-// highlight-next-line
 public class MyAwesomeDisaster : CustomDisaster
 {
     /* ... */
@@ -24,12 +23,10 @@ There are 4 methods that you can implement:
 ```csharp title="/MyAwesomeProject/MyAwesomeDisaster.cs"
 public class MyAwesomeDisaster : CustomDisaster
 {
-    // highlight-start
     public override void Start() { /* ... */ }
     public override void StartAfterNotification() { /* ... */}
     public override void Finish() { /* ... */ }
     public override IEnumerator? Updating() { /* ... */ }
-    // highlight-end
 }
 ```
 
@@ -48,13 +45,11 @@ If you want your disaster to appear only under certain conditions, override the 
 ```csharp title="/MyAwesomeProject/MyAwesomeDisaster.cs"
 public class MyAwesomeDisaster : CustomDisaster
 {
-    // highlight-start
     public override bool Test()
     {
         // for example, if it's a Park level
         return CurrentDistrict == 2;
     }
-    // highlight-end
 }
 ```
 
@@ -88,13 +83,11 @@ And, if you want to force your disaster onto a level, override the `TestForced` 
 ```csharp title="/MyAwesomeProject/MyAwesomeDisaster.cs"
 public class MyAwesomeDisaster : CustomDisaster
 {
-    // highlight-start
     public override bool TestForced()
     {
         // for example, if there's a Mayor on the level
         return gc.agentList.Exists(a => a.agentName === VanillaAgents.Mayor);
     }
-    // highlight-end
 }
 ```
 
@@ -105,9 +98,7 @@ Normally, you can't teleport during disasters, but you can change that by overri
 ```csharp title="/MyAwesomeProject/MyAwesomeDisaster.cs"
 public class MyAwesomeDisaster : CustomDisaster
 {
-    // highlight-start
     public override bool AllowTeleport => true;
-    // highlight-end
 }
 ```
 

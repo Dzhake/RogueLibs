@@ -12,13 +12,10 @@ Custom abilities can be made chargeable by implementing the `IAbilityChargeable`
 Just implement the `IAbilityChargeable` interface in your ability's class:
 
 ```csharp title="/MyAwesomeProject/MyChargeableAbility.cs"
-// highlight-next-line
 public class MyChargeableAbility : CustomAbility, IAbilityChargeable
 {
-    // highlight-start
     public void OnHeld(AbilityHeldArgs e) { /* ... */ }
     public void OnReleased(AbilityReleasedArgs e) { /* ... */ }
-    // highlight-end
 }
 ```
 

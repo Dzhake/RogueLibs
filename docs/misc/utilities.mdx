@@ -12,10 +12,8 @@ Since RogueLibs handles custom stuff as classes, you might forget to initialize 
 ```csharp title="/MyAwesomeProject/MyAwesomeItem.cs"
 public class MyAwesomeItem : CustomItem
 {
-    // highlight-start
     [RLSetup]
     public static void Setup()
-    // highlight-end
     {
         RogueLibs.CreateCustomItem<MyAwesomeItem>()
             .WithName(new CustomNameInfo("My Awesome Item"))
@@ -53,15 +51,12 @@ If you want to update your items/traits/effects/objects with Unity's `Update`, `
 <TabItem value="IDoUpdate" label={<code>{"IDoUpdate"}</code>}>
 
 ```csharp title="/MyAwesomeProject/MyAwesomeItem.cs"
-// highlight-next-line
 public class MyAwesomeItem : CustomItem, IDoUpdate
 {
-    // highlight-start
     public void Update()
     {
         /* ... */
     }
-    // highlight-end
 }
 ```
 
@@ -69,15 +64,12 @@ public class MyAwesomeItem : CustomItem, IDoUpdate
 <TabItem value="IDoFixedUpdate" label={<code>{"IDoFixedUpdate"}</code>}>
 
 ```csharp title="/MyAwesomeProject/MyAwesomeItem.cs"
-// highlight-next-line
 public class MyAwesomeItem : CustomItem, IDoFixedUpdate
 {
-    // highlight-start
     public void FixedUpdate()
     {
         /* ... */
     }
-    // highlight-end
 }
 ```
 
@@ -85,15 +77,12 @@ public class MyAwesomeItem : CustomItem, IDoFixedUpdate
 <TabItem value="IDoLateUpdate" label={<code>{"IDoLateUpdate"}</code>}>
 
 ```csharp title="/MyAwesomeProject/MyAwesomeItem.cs"
-// highlight-next-line
 public class MyAwesomeItem : CustomItem, IDoLateUpdate
 {
-    // highlight-start
     public void LateUpdate()
     {
         /* ... */
     }
-    // highlight-end
 }
 ```
 

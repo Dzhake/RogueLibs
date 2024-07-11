@@ -12,7 +12,6 @@ RogueLibs v3.5.0 introduced custom interactions with a pretty unique syntax. All
 The simplest way to create custom interactions is by using a `SimpleInteractionProvider` class. It allows you to utilize all of the object-oriented programming principles and keeps the code simple and straightforward. Use `RogueInteractions.CreateProvider<T>` methods to create instances of that class. You can add buttons using `h.AddButton` inside the handler.
 
 ```csharp title="/MyAwesomeProject/MyAwesomeInteractions.cs"
-// highlight-next-line
 RogueInteractions.CreateProvider<Crate>(static h => /* h - handler */
 {
     // If interacted with via hacking, do not add the button
@@ -63,7 +62,6 @@ RogueInteractions.CreateProvider<Crate>(static h =>
 By specifying a type parameter to the method (like `CreateProvider<Crate>`), it will narrow down the type of objects that you want to add interactions to. If your action may affect multiple types of objects, you can use the more general `CreateProvider` method, that is triggered on all kinds of objects.
 
 ```csharp title="/MyAwesomeProject/MyAwesomeInteractions.cs"
-// highlight-next-line
 RogueInteractions.CreateProvider(static h =>
 {
     if (h.Object is Crate)

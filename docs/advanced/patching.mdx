@@ -60,12 +60,10 @@ public class MyAwesomePlugin : BaseUnityPlugin
 {
     public void Awake()
     {
-        // highlight-next-line
         RoguePatcher patcher = new RoguePatcher(this, typeof(MyAwesomePatches));
 
         patcher.Postfix(typeof(StatusEffects), nameof(StatusEffects.hasStatusEffect));
 
-        // highlight-next-line
         patcher.TypeWithPatches = typeof(MyEvenMoreAwesomePatches);
 
         patcher.Postfix(typeof(InvDatabase), nameof(InvDatabase.ChooseArmor), new Type[1] { typeof(string) });

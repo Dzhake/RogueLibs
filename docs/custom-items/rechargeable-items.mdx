@@ -12,7 +12,6 @@ RogueLibs doesn't provide any explicit functionality for rechargeable items, but
 Make your custom item's class implement the [`IDoUpdate` interface](../misc/utilities#update-interfaces):
 
 ```csharp title="/MyAwesomeProject/MyRechargeableItem.cs"
-// highlight-next-line
 public class MyRechargeableItem : CustomItem, IDoUpdate
 {
     /* ... */
