@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RogueLibsCore
 {
@@ -642,6 +643,26 @@ namespace RogueLibsCore
         {
             if (agent is null) throw new ArgumentNullException(nameof(agent));
             return agent.GetHook<LastFiredBulletHook>()?.LastFiredBullet;
+        }
+        /// <typeparam name="TAgent">The type of the agent to spawn on level</typeparam>
+        /// <param name="gc">The GameController.</param>
+        /// <param name="position">The position of agent spawn.</param>
+        /// <returns>The spawned agent, if exist on level; otherwise, <see langword="null"/>.</returns>
+        public static TAgent? SpawnAgent<TAgent>(this GameController gc, Vector3 position) where TAgent : CustomAgent
+        {
+            string agentName = CustomAgentMetadata.Get<TAgent>().Name;
+            Agent agent = /* GameController.gameController */ gc.spawnerMain.SpawnAgent(position, null, agentName);
+            return agent?.GetHook<TAgent>();
+        }
+        /// <typeparam name="TAgent">The type of the agent to spawn on level</typeparam>
+        /// <param name="sp">The SpawnerMain.</param>
+        /// <param name="position">The position of agent spawn.</param>
+        /// <returns>The spawned agent, if exist on level; otherwise, <see langword="null"/>.</returns>
+        public static TAgent? SpawnAgent<TAgent>(this SpawnerMain sp, Vector3 position) where TAgent : CustomAgent
+        {
+            string agentName = CustomAgentMetadata.Get<TAgent>().Name;
+            Agent agent = sp.SpawnAgent(position, null, agentName);
+            return agent?.GetHook<TAgent>();
         }
 
     }
