@@ -127,15 +127,56 @@ Member name            | Description
 -----------------------|------------
 **`SetEndurance()`**   | **The Endurance stat.** Common range: from 0 to 3 (Endurance 1 to 4 respectively). Determines the agent's max health. Formula: `Max health = (80 + enduranceStat * 20) / 3`.
 **`SetStrength()`**    | **The Strength stat.** Common range: from 0 to 3 (Strength 1 to 4 respectively). Determines the damage of the agent's melee attacks. Formula: `Damage = (weaponDamage * 1 + strengthStat) / 3`.
-**`SetAccuracy()`**    | **The Firearms stat.** Common range: from 0 to 3 (Firearms 1 to 4 respectively). Determines the damage of the agent's ranged attacks. Formula: `Damage = (accuracyStat * 0.6f + moreAccuracy) / 5`.
+**`SetAccuracy()`**    | **The Firearms stat.** Common range: from 0 to 3 (Firearms 1 to 4 respectively). Determines the damage of the agent's ranged attacks. Formula: `Damage = (accuracyStat * 0.6 + moreAccuracy) / 5`.
 **`SetSpeed()`**       | **The Speed stat.** Common range: from 0 to 3 (Speed 1 to 4 respectively). Determines the agent's movement speed. Formula: `Max speed = 1750 + speedStat * 250.` (the actual physical speed is 1/100 of that number).
 **`modMeleeSkill`**    | **The NPC's melee skill.** Aceepts values from 0 to 2. More details in `Combat.Start()`.
 **`modGunSkill`**      | **The NPC's gun skill.** Accepts values from 0 to 2. Affects weapon cooldown and attack range. More details in `Combat.CombatCheck()` and `Combat.SetPersonalCooldown()`.
 **`modToughness`**     | **The NPC's "toughness".** Accepts values from 0 to 2. Determines how much danger an agent can be exposed to, before getting scared and fleeing. More details in `BrainUpdate`.
-**`modVigilant`**      | **The NPC's sensitivity to noise.** Accepts values from 0 to 2. More details om `GoalNoiseReact`.
+**`modVigilant`**      | **The NPC's sensitivity to noise.** Accepts values from 0 to 2. More details on `GoalNoiseReact`.
 
 {/* TODO: Use KaTeX for formulas */}
 
 :::caution
 Do not edit `Agent.agentName` - that is the internal agent name, that's used by SoR and RL. Editing it may break some stuff. If you need to change the agent's displayed name, use `Agent.agentRealName` instead.
 :::
+
+## Spawning agent {#setting-patch}
+
+For spawning agents you needs make body of patch `LoadLevel.SetupMore4()` and load patch in patcher:
+
+:::note
+See more about the patching [here](../advanced/patching).
+:::
+
+```csharp title="/MyAwesomeProject/MyAwesomePlugin.cs"
+public void Awake()
+{
+    RoguePatcher patcher = new RoguePatcher(this);
+    patcher.Postfix(typeof(LoadLevel), nameof(LoadLevel.SetupMore4));
+}
+
+public static void LoadLevel_SetupMore4(LoadLevel __instance, ref GameController ___gc)
+{
+    ___gc.SpawnAgent<MyAwesomeAgent>(/* my awesome position */);
+}
+```
+
+:::tip{title="Pro-tip: Avoiding tutorial and homebase spawning"}
+Use that conditions for avoiding spawn agents on tutorial and homebase levels.
+:::
+
+```csharp title="/MyAwesomeProject/MyAwesomePlugin.cs"
+public void Awake()
+{
+    RoguePatcher patcher = new RoguePatcher(this);
+    patcher.Postfix(typeof(LoadLevel), nameof(LoadLevel.SetupMore4));
+}
+
+public static void LoadLevel_SetupMore4(LoadLevel __instance, ref GameController ___gc)
+{
+    if (___gc.levelType != "HomeBase" && ___gc.levelType != "Tutorial")
+    {
+        ___gc.SpawnAgent<MyAwesomeAgent>(/* my awesome position */);
+    }        
+}
+```
