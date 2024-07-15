@@ -70,7 +70,8 @@ pages:
   - custom-name-providers
 - resources:
   - resources
-  - shaders  
+  - shaders
+  - spritepacks
 - misc/custom-disaster
 - misc/utilities
 - misc/custom-big-quests
