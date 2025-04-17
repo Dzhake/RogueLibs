@@ -13,6 +13,7 @@ namespace RogueLibsCore
             Athlete = "Athlete",
             Bartender = "Bartender",
             Bouncer = "Bouncer",
+            ButlerBot = "ButlerBot",
             Cannibal = "Cannibal",
             Clerk = "Clerk",
             Comedian = "Comedian",
