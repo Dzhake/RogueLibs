@@ -28,6 +28,7 @@ namespace RogueLibsCore
             Drunk = "Drunk",
             Electrocuted = "Electrocuted",
             ElectroTouch = "ElectroTouch",
+            ExtraLifeForPAXers = "ExtraLife",
             Fast = "Fast",
             FeelingGood = "FeelingGood",
             FeelingLucky = "FeelingLucky",
