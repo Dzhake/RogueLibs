@@ -24,6 +24,7 @@ namespace RogueLibsCore
             Possess = "Possess",
             PowerSap = "PowerSap",
             PrimalLunge = "Lunge",
+            ProtectiveShell = "ProtectiveShell",
             SharpLunge = "WerewolfLunge",
             StickyGlove = "StealingGlove",
             Stomp = "Stomp",
