@@ -41,7 +41,7 @@ namespace RogueLibsCore
         /// <summary>
         ///   <para>Semantic version of RogueLibs that the current assembly is compiled with. Don't use it in BepInPlugin.</para>
         /// </summary>
-        public const string CompiledSemanticVersion = "4.0.0-rc.2";
+        public const string CompiledSemanticVersion = "4.0.0-rc.3";
         /// <summary>
         ///   <para>Currently installed and running version of RogueLibs.</para>
         /// </summary>
