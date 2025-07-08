@@ -3,7 +3,6 @@ using System.Collections;
 using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace RogueLibsCore
 {
@@ -16,7 +15,6 @@ namespace RogueLibsCore
                            new Type[3] { typeof(string), typeof(int), typeof(string) });
 
             // the patches below are all side effects of AgentInteractions.DetermineButtons
-#pragma warning disable CS0618
             Patcher.Prefix(typeof(Agent), nameof(Agent.SayDialogue),
                            new Type[4] { typeof(bool), typeof(string), typeof(bool), typeof(uint) });
             Patcher.Prefix(typeof(AudioHandler), nameof(AudioHandler.Play),
@@ -36,7 +34,6 @@ namespace RogueLibsCore
             MethodInfo sleepingSetter = AccessTools.PropertySetter(typeof(Agent), nameof(Agent.sleeping));
             Harmony harmony = Patcher.GetHarmony();
             harmony.Patch(sleepingSetter, new HarmonyMethod(AccessTools.Method(typeof(RogueLibsPlugin), nameof(Agent_set_sleeping))));
-#pragma warning restore CS0618
 
         }
 
@@ -64,7 +61,6 @@ namespace RogueLibsCore
         // ReSharper disable InconsistentNaming
         // ReSharper disable IdentifierTypo
         // ReSharper disable StringLiteralTypo
-#pragma warning disable CS0618
 
         public static bool Agent_SayDialogue(Agent __instance, bool playerSayToAll, string type, bool importantText,
                                              uint myNetID, ref string __result)
