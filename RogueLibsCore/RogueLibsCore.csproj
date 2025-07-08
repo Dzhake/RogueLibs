@@ -38,9 +38,6 @@
     <Reference Include="BepInEx">
       <HintPath>..\..\.ref\static\BepInEx.dll</HintPath>
     </Reference>
-    <Reference Include="com.unity.multiplayer-hlapi.Runtime">
-      <HintPath>..\..\.ref\static\com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard">
       <HintPath>..\..\.ref\static\netstandard.dll</HintPath>
     </Reference>
@@ -85,6 +82,24 @@
     </Reference>
     <Reference Include="UnityEngine.UnityWebRequestWWWModule">
       <HintPath>..\..\.ref\static\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+      <HintPath>..\..\.ref\static\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Authenticators">
+      <HintPath>..\..\.ref\static\Mirror.Authenticators.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.BouncyCastle.Cryptography">
+      <HintPath>..\..\.ref\static\Mirror.BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Components">
+      <HintPath>..\..\.ref\static\Mirror.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Examples">
+      <HintPath>..\..\.ref\static\Mirror.Examples.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Transports">
+      <HintPath>..\..\.ref\static\Mirror.Transports.dll</HintPath>
     </Reference>
   </ItemGroup>
 

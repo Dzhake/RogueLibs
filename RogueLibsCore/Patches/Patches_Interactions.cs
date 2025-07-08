@@ -158,7 +158,7 @@ namespace RogueLibsCore
             {
                 agent.interactionHelper.clientInteracting = true;
                 Debug.Log("CmdInteractFar");
-                agent.objectMult.CallCmdInteractFar(__instance.objectNetID);
+                agent.objectMult.CmdInteractFar(__instance.objectNetID);
             }
             __instance.someoneInteracting = true;
             agent.interactionHelper.interactingFar = true;

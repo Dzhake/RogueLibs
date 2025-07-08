@@ -74,9 +74,9 @@
                     if (gc.serverPlayer)
                     {
                         SendAnnouncementInChat("WantsToGo", Name);
-                        gc.playerAgent.objectMult.CallRpcForceShowCharacterSelect();
+                        gc.playerAgent.objectMult.RpcForceShowCharacterSelect();
                     }
-                    else gc.playerAgent.objectMult.CallCmdForceShowCharacterSelect(Name);
+                    else gc.playerAgent.objectMult.CmdForceShowCharacterSelect(Name);
                 }
             }
             else PlaySound(VanillaAudio.CantDo);

@@ -18,9 +18,9 @@ namespace RogueLibsCore
             // the patches below are all side effects of AgentInteractions.DetermineButtons
 #pragma warning disable CS0618
             Patcher.Prefix(typeof(Agent), nameof(Agent.SayDialogue),
-                           new Type[4] { typeof(bool), typeof(string), typeof(bool), typeof(NetworkInstanceId) });
+                           new Type[4] { typeof(bool), typeof(string), typeof(bool), typeof(uint) });
             Patcher.Prefix(typeof(AudioHandler), nameof(AudioHandler.Play),
-                           new Type[4] { typeof(PlayfieldObject), typeof(string), typeof(NetworkInstanceId), typeof(bool) });
+                           new Type[4] { typeof(PlayfieldObject), typeof(string), typeof(uint), typeof(bool) });
             Patcher.Prefix(typeof(Agent), nameof(Agent.Say), new Type[2] { typeof(string), typeof(bool) });
             Patcher.Prefix(typeof(Cinematics), nameof(Cinematics.DoctorAfterTutorial), new Type[1] { typeof(Agent) });
             Patcher.Prefix(typeof(StatusEffects), nameof(StatusEffects.PressedSpecialAbility),
@@ -67,7 +67,7 @@ namespace RogueLibsCore
 #pragma warning disable CS0618
 
         public static bool Agent_SayDialogue(Agent __instance, bool playerSayToAll, string type, bool importantText,
-                                             NetworkInstanceId myNetID, ref string __result)
+                                             uint myNetID, ref string __result)
         {
             if (!VanillaInteractions.Queuing) return true;
             VanillaInteractions.QueueAction("Agent.SayDialogue", _ => __instance.SayDialogue(playerSayToAll, type, importantText, myNetID));
@@ -76,7 +76,7 @@ namespace RogueLibsCore
         }
 
         public static bool AudioHandler_Play(AudioHandler __instance, PlayfieldObject playfieldObject, string clipName,
-                                             NetworkInstanceId cameFromClient, bool dontPlayOnClients)
+                                             uint cameFromClient, bool dontPlayOnClients)
             => QueuePrefix("AudioHandler.PlaySound", _ => __instance.Play(playfieldObject, clipName, cameFromClient, dontPlayOnClients));
         public static bool Agent_Say(Agent __instance, string myMessage, bool importantText)
             => QueuePrefix("Agent.Say", _ => __instance.Say(myMessage, importantText));

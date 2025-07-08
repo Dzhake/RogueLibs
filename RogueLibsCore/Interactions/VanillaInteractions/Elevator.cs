@@ -51,10 +51,10 @@ namespace RogueLibsCore
                                 if (m.gc.serverPlayer)
                                 {
                                     m.gc.playerAgent.objectMult.SendChatAnnouncement("WantsToGo", "", "");
-                                    m.gc.playerAgent.objectMult.CallRpcForceShowCharacterSelect();
+                                    m.gc.playerAgent.objectMult.RpcForceShowCharacterSelect();
                                     return;
                                 }
-                                m.gc.playerAgent.objectMult.CallCmdForceShowCharacterSelect("");
+                                m.gc.playerAgent.objectMult.CmdForceShowCharacterSelect("");
                             }
                         });
 
