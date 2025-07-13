@@ -13,11 +13,13 @@ namespace RogueLibsCore
         /// </summary>
         public Agent Agent => Instance;
 
-        private AgentColors? colors;
+        private AgentColors? _colors;
+
         /// <summary>
-        ///   <para>Gets the custom agent's colors settings.</para>
+        ///   <para>Gets the custom agent's _colors settings.</para>
         /// </summary>
-        public AgentColors Colors => colors ??= new AgentColors(this);
+        public AgentColors Colors => _colors ??= new AgentColors(this);
+
         /// <summary>
         ///   <para>Gets the custom agent's metadata.</para>
         /// </summary>
@@ -56,17 +58,15 @@ namespace RogueLibsCore
 
             Agent.customCharacterData.facialHair = "None";
 
-            if (Metadata.bodySprite != null)
+            if (Metadata._bodySprite != null)
             {
                 Agent.shirtless = false;
                 Agent.customCharacterData.bodyType = $"{Metadata.Name}";
             }
             else
-            {
                 RogueFramework.LogWarning($"Custom agent {GetType()} doesn't have body sprite!");
-            }
 
-            if (Metadata.headSprite != null)
+            if (Metadata._headSprite != null)
                 Agent.agentHitboxScript.headPieceType = Metadata.Name;
             else
                 RogueFramework.LogWarning($"Custom agent {GetType()} doesn't have head sprite!");
@@ -77,7 +77,7 @@ namespace RogueLibsCore
             }
             catch (Exception e)
             {
-                RogueFramework.LogError(e, "SetupAgent", this, Agent); // maybe need rename to SetupAgent
+                RogueFramework.LogError(e, "SetupAgent", this, Agent);
             }
 
             if (Agent.healthMax <= 0)
@@ -100,7 +100,6 @@ namespace RogueLibsCore
             if (Agent.speedStatMod is RogueFramework.SpecialInt)
                 Agent.speedStatMod = 1;
 
-
             if (Agent.modMeleeSkill is RogueFramework.SpecialInt)
                 Agent.modMeleeSkill = 0;
 
@@ -122,6 +121,7 @@ namespace RogueLibsCore
             Agent.agentActive = true;
             Agent.SetBrainActive(true);
         }
+
         /// <summary>
         ///   <para>The method that is called when the agent's stats are set up.</para>
         /// </summary>

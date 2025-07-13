@@ -63,7 +63,7 @@ namespace RogueLibsCore
                 RogueLibs.CreateCustomSprite(MetaData.Name + "Head" + "W", SpriteScope.Agents, rawData, Area(0, 1), 64f),
                 RogueLibs.CreateCustomSprite(MetaData.Name + "Head" + "NW", SpriteScope.Agents, rawData, Area(0, 0), 64f),
             };
-            MetaData.headSprite = headSprite;
+            MetaData._headSprite = headSprite;
             return this;
         }
         /// <summary>
@@ -87,7 +87,7 @@ namespace RogueLibsCore
                 RogueLibs.CreateCustomSprite(MetaData.Name + "W", SpriteScope.Bodies, rawData, Area(0, 1), 64f),
                 RogueLibs.CreateCustomSprite(MetaData.Name + "NW", SpriteScope.Bodies, rawData, Area(0, 0), 64f),
             };
-            MetaData.bodySprite = bodySprite;
+            MetaData._bodySprite = bodySprite;
             return this;
         }
     }

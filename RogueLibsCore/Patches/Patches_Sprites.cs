@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ namespace RogueLibsCore
 {
     internal sealed partial class RogueLibsPlugin
     {
+        private static readonly Regex _spriteNameRegex = new("WBH?|H", RegexOptions.Compiled);
+
         public void PatchSprites()
         {
             // define non-initialized RogueSprites
@@ -165,11 +168,13 @@ namespace RogueLibsCore
             __instance.objectSprite.objectRenderer.sharedMaterial = mat;
             __instance.objectSprite.objectRenderer.sharedMaterial.shader = shader;
         }
+
         public static void ObjectSprite_SetObjectHighlight(ObjectSprite __instance)
         {
             RogueSprite? sprite = __instance.sprH.CurrentSprite.GetHook();
             if (sprite is not null) __instance.objectRendererH.sharedMaterial = sprite.LightUpMaterial;
         }
+
         public static void ObjectSprite_SetAgentOff(ObjectSprite __instance)
         {
             List<Renderer> agentSpriteRendererListH = __instance.agentHitbox.agentSpriteRendererListH;
@@ -177,7 +182,7 @@ namespace RogueLibsCore
             if (!__instance.agentColorDirty && __instance.gc.loadCompleteReally && __instance.didSetRendererOffInitial)
             {
                 for (int i = 0; i < agentSpriteRendererListH.Count; i++)
-                {
+                {   
                     agentSpriteRendererListH[i].enabled = false;
                     RogueSprite? sprite = agentSpriteList[i].CurrentSprite.GetHook();
                     if (sprite is not null) __instance.agentHitbox.agentSpriteRendererList[i].sharedMaterial = sprite.Material;
@@ -216,57 +221,17 @@ namespace RogueLibsCore
                 if (gunSpr is not null) __instance.agent.gun.gunSpriteRenderer.sharedMaterial = gunSpr.Material;
             }
 
-            // Coloring for custom agents
-            for (int j = 0; j < agentSpriteList.Count; j++)
+            // Coloring custom agents
+            for (var j = 0; j < agentSpriteList.Count; j++)
             {
-                tk2dSprite sprite = agentSpriteList[j];
+                var sprite = agentSpriteList[j];
+                var customAgent = __instance.agent.GetHook<CustomAgent>();
+                var spriteName = _spriteNameRegex.Replace(sprite.name, string.Empty);
 
-                CustomAgentMetadata? metadata = __instance.agent.GetHook<CustomAgent>()?.Metadata;
-                if (metadata is not null)
-                {
-                    if (sprite.name.Contains("FacialHair"))
-                    {
-                        sprite.color = metadata.facialHairColor;
-                    }
-                    if (sprite.name.Contains("Hair"))
-                    {
-                        sprite.color = metadata.hairColor;
-                    }
-                    if (sprite.name.Contains("Head"))
-                    {
-                        sprite.color = metadata.headColor;
-                    }
-                    if (sprite.name.Contains("Eyes"))
-                    {
-                        sprite.color = metadata.eyesColor;
-                    }
-                    if (sprite.name.Contains("Body"))
-                    {
-                        sprite.color = metadata.bodyColor;
-                    }
-                    if (sprite.name.Contains("Arm1"))
-                    {
-                        sprite.color = metadata.arm1Color;
-                    }
-                    if (sprite.name.Contains("Arm2"))
-                    {
-                        sprite.color = metadata.arm2Color;
-                    }
-                    if (sprite.name.Contains("Leg1"))
-                    {
-                        sprite.color = metadata.leg1Color;
-                    }
-                    if (sprite.name.Contains("Leg2"))
-                    {
-                        sprite.color = metadata.leg2Color;
-                    }
-                    if (sprite.name.Contains("Footwear"))
-                    {
-                        sprite.color = metadata.footwearColor;
-                    }
-                }
+                if (customAgent != null && customAgent.Colors.TryGetColor(CustomAgentPartMetadata.GetId(spriteName), out var color)) sprite.color = color.Value;
             }
         }
+
         public static void ObjectSprite_SetAgentHighlight(ObjectSprite __instance, int i)
         {
             Renderer renderer = __instance.agentHitbox.agentSpriteRendererListH[i];
@@ -277,7 +242,7 @@ namespace RogueLibsCore
         public static void InvDatabase_ThrowWeapon(InvDatabase __instance)
         {
             RogueSprite? sprite = __instance.agent?.agentHitboxScript?.heldItem2?.CurrentSprite?.GetHook();
-            if (sprite is not null) __instance.agent.agentHitboxScript.heldItem2Renderer.sharedMaterial = sprite.Material;
+            if (sprite is not null) __instance.agent!.agentHitboxScript!.heldItem2Renderer.sharedMaterial = sprite.Material;
         }
         public static bool InvDatabase_DropItemAmount(InvDatabase __instance, InvItem item, int amount, bool actionsAfterDrop,
                                                       Vector2 teleportingItemLocation, out Item __result)
@@ -315,16 +280,19 @@ namespace RogueLibsCore
             __result = dropped!;
             return false;
         }
+
         public static void Item_DestroyMe2(Item __instance)
         {
             RogueSprite? sprite = __instance.itemImage?.CurrentSprite?.GetHook();
             if (sprite is not null) __instance.itemImageTransform.GetComponent<Renderer>().sharedMaterial = sprite.Material;
         }
+
         public static void Item_FakeStart(Item __instance)
         {
             RogueSprite? sprite = __instance.itemImageReal?.CurrentSprite?.GetHook();
-            if (sprite is not null) __instance.itemImageReal.GetComponent<Renderer>().sharedMaterial = sprite.Material;
+            if (sprite is not null) __instance.itemImageReal!.GetComponent<Renderer>().sharedMaterial = sprite.Material;
         }
+
         public static void Melee_MeleeLateUpdate(Melee __instance)
         {
             AgentHitbox hb = __instance.agent.agentHitboxScript;
@@ -358,8 +326,10 @@ namespace RogueLibsCore
             }
             catch { /* ??? */ }
         }
+
         public static void ObjectReal_SpawnShadow(ObjectReal __instance, ref IEnumerator __result)
             => __result = SpawnShadowHelper(__instance, __result);
+
         private static IEnumerator SpawnShadowHelper(ObjectReal __instance, IEnumerator enumerator)
         {
             while (enumerator.MoveNext())
